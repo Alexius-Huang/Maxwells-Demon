@@ -15,6 +15,16 @@ button, a {
 button:focus, a:focus, input:focus {
   outline: none;
 }
+input {
+  border: none;
+  background-color: #333;
+  color: white;
+  width: 100%;
+  height: 20pt;
+  line-height: 20pt;
+  font-size: 10pt;
+  padding: 0 5pt;
+}
 
 #app-wrapper {
   font-size: 0;
@@ -41,6 +51,16 @@ button:focus, a:focus, input:focus {
 .virtual-folder[data-expand="false"] > .virtual-notebook,
 .virtual-folder[data-expand="false"] > .virtual-folder {
   display: none;
+}
+
+.virtual-folder-new-input {
+  margin-left: 10pt;
+  width: calc(100% - 20pt);
+  transition: .25s;
+}
+.virtual-folder-new-input:focus {
+  background-color: #555;
+  transition: .25s;
 }
 
 .fadeIn {
