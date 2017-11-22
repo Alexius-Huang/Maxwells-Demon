@@ -30,11 +30,17 @@ button:focus, a:focus, input:focus {
   overflow: auto;
 }
 
-.virtual-folder p {
+.virtual-folder p, .virtual-notebook {
   font-size: 10pt;
+  font-family: monospace;
 }
+.virtual-notebook,
 .virtual-folder > .virtual-folder {
   margin-left: 10pt;
+}
+.virtual-folder[data-expand="false"] > .virtual-notebook,
+.virtual-folder[data-expand="false"] > .virtual-folder {
+  display: none;
 }
 
 .fadeIn {

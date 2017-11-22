@@ -28560,6 +28560,43 @@ var FileSystem = function (_React$Component) {
   }
 
   _createClass(FileSystem, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      /* Render Individual Notebooks */
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.props.notebooks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var _ref = _step.value;
+          var id = _ref.id;
+          var folderId = _ref.folderId;
+          var name = _ref.name;
+
+          var folder = document.querySelector('[data-folder-id="' + folderId + '"]');
+          var div = document.createElement('div');
+          div.setAttribute('class', 'virtual-notebook');
+          div.setAttribute('data-notebook-id', id);
+          div.innerHTML = '<span class="fa fa-book"></span> ' + name;
+          folder.appendChild(div);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    }
+  }, {
     key: 'recursiveRenderFolderStructure',
     value: function recursiveRenderFolderStructure(structure) {
       var _this2 = this;
@@ -28568,11 +28605,11 @@ var FileSystem = function (_React$Component) {
 
       return _react2.default.createElement(
         'div',
-        { className: 'virtual-folder', key: index },
+        { className: 'virtual-folder', key: index, 'data-expand': structure.expand, 'data-folder-id': structure.id },
         _react2.default.createElement(
           'p',
           null,
-          _react2.default.createElement('span', { className: 'fa fa-folder' }),
+          _react2.default.createElement('span', { className: 'fa fa-folder' + (structure.expand ? '-open' : '') }),
           ' ',
           structure.folderName
         ),
@@ -28597,11 +28634,11 @@ var FileSystem = function (_React$Component) {
   return FileSystem;
 }(_react2.default.Component);
 
-function mapStateToProps(_ref) {
-  var _ref$FileSystemReduce = _ref.FileSystemReducers,
-      modal = _ref$FileSystemReduce.modal,
-      structure = _ref$FileSystemReduce.structure,
-      notebooks = _ref$FileSystemReduce.notebooks;
+function mapStateToProps(_ref2) {
+  var _ref2$FileSystemReduc = _ref2.FileSystemReducers,
+      modal = _ref2$FileSystemReduc.modal,
+      structure = _ref2$FileSystemReduc.structure,
+      notebooks = _ref2$FileSystemReduc.notebooks;
 
   return { modal: modal, structure: structure, notebooks: notebooks };
 }
@@ -28634,11 +28671,13 @@ var _reduxActions = __webpack_require__(44);
 var defaultState = {
   structure: {
     folderName: 'global',
-    subFolders: [{ folderName: 'test1', subFolders: [] }, { folderName: 'test2', subFolders: [] }, { folderName: 'test3', subFolders: [] }, { folderName: 'test4', subFolders: [{ folderName: 'test6', subFolders: [] }, { folderName: 'test7', subFolders: [] }, { folderName: 'test8', subFolders: [] }] }, { folderName: 'test5', subFolders: [] }]
+    id: 1,
+    expand: true,
+    subFolders: [{ folderName: 'test1', subFolders: [], id: 2, expand: false }, { folderName: 'test2', subFolders: [], id: 3, expand: false }, { folderName: 'test3', subFolders: [], id: 4, expand: false }, { folderName: 'test4', subFolders: [{ folderName: 'test6', subFolders: [], id: 7, expand: false }, { folderName: 'test7', subFolders: [], id: 8, expand: false }, { folderName: 'test8', subFolders: [], id: 9, expand: false }], expand: false, id: 5 }, { folderName: 'test5', subFolders: [], id: 6, expand: false }]
   },
   notebooks: [{
     id: 1,
-    folder: 'global',
+    folderId: 1,
     name: 'Welcome!'
   }],
   modal: { toggle: false, targetFolder: null }
