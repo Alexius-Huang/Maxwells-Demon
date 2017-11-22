@@ -1,0 +1,60 @@
+html, body {
+  height: 100vh;
+  width: 100vh;
+  background-color: #333;
+  color: #ddd;
+  margin: 0;
+  padding: 0;
+}
+
+.notebook-component {
+  padding: 20pt;
+}
+
+.cell-component {
+  width: 100%;
+  padding: 5pt;
+  box-sizing: border-box;
+  border: 1pt solid #777;
+}
+
+.cell-component > .cell-textarea {
+  width: 100%;
+  line-height: 18pt;
+  color: white;
+  background-color: #333;
+  border: 1pt solid #777;
+  box-sizing: border-box;
+  font-family: monospace;
+  font-size: 14px;
+  padding: 3pt 5pt;
+  transition: .25s;
+}
+.cell-component > .cell-textarea:focus {
+  border: 1pt solid #ddd;
+  outline: none;
+  background-color: #555;
+  transition: .25s;
+}
+.cell-component > .cell-content {
+  padding: 5pt 5pt 0 5pt;
+  white-space: pre;
+}
+
+.cell-content.markdown h1,
+.cell-content.markdown h2,
+.cell-content.markdown h3,
+.cell-content.markdown h4,
+.cell-content.markdown h5,
+.cell-content.markdown h6 {
+  margin: 0;
+  border-bottom: 1pt solid #666;
+}
+
+.cell-content.markdown p {
+  margin: 0;
+  line-height: 16pt;
+}
+.cell-content.markdown a {
+  color: #ccc;
+}
