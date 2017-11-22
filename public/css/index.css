@@ -7,6 +7,15 @@ html, body {
   padding: 0;
 }
 
+button, a {
+  color: white;
+  border: none;
+  background-color: #333;
+}
+button:focus, a:focus, input:focus {
+  outline: none;
+}
+
 .notebook-component {
   padding: 20pt;
 }
@@ -16,6 +25,9 @@ html, body {
   padding: 5pt;
   box-sizing: border-box;
   border: 1pt solid #777;
+}
+.cell-component + .cell-component {
+  margin-top: 10pt;
 }
 
 .cell-component > .cell-textarea {
@@ -57,4 +69,30 @@ html, body {
 }
 .cell-content.markdown a {
   color: #ccc;
+}
+
+button#new-cell-btn {
+  display: block;
+  margin: 10pt auto 0 auto;
+  background-color: #555;
+  padding: 0;
+  width: 100pt;
+  font-size: 10pt;
+  height: 25pt;
+  line-height: 25pt;
+  transition: .25s;
+}
+button#new-cell-btn:hover {
+  background-color: #ddd;
+  color: #333;
+  transition: .25s;
+}
+
+.fadeIn {
+  animation: fadeIn .5s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0 }
+  to   { opacity: 1 }
 }

@@ -22190,19 +22190,20 @@ var _reduxActions = __webpack_require__(44);
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
+var counter = 1;
+
 var defaultState = {
   cells: [{ id: 1, type: 'markdown', content: '# Welcome!' }],
-  cellIDCounter: 1
+  cellIDCounter: counter
 };
 
 var CellReducers = exports.CellReducers = (0, _reduxActions.handleActions)({
   NEW_CELL: function NEW_CELL(_ref, _ref2) {
-    var cellIDCounter = _ref.cellIDCounter,
-        cells = _ref.cells;
+    var cells = _ref.cells;
     var type = _ref2.payload;
     return {
-      cellIDCounter: state.cellIDCounter + 1,
-      cells: [].concat(_toConsumableArray(cells), [{ type: type, content: '' }])
+      cellIDCounter: ++counter,
+      cells: [].concat(_toConsumableArray(cells), [{ id: counter, type: type, content: 'New Section' }])
     };
   },
   DELETE_CELL: function DELETE_CELL(_ref3, _ref4) {
@@ -23750,7 +23751,11 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _redux = __webpack_require__(17);
+
 var _reactRedux = __webpack_require__(19);
+
+var _CellActions = __webpack_require__(141);
 
 var _Cell = __webpack_require__(139);
 
@@ -23763,8 +23768,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-// import { newCell, deleteCell } from '../actions/CellActions'
-
 
 var NoteBook = function (_React$Component) {
   _inherits(NoteBook, _React$Component);
@@ -23778,7 +23781,11 @@ var NoteBook = function (_React$Component) {
   _createClass(NoteBook, [{
     key: 'render',
     value: function render() {
-      var renderCells = this.props.cells.map(function (_ref) {
+      var _this2 = this;
+
+      var cells = this.props.cells;
+
+      var renderCells = cells.map(function (_ref) {
         var id = _ref.id,
             type = _ref.type,
             content = _ref.content;
@@ -23792,7 +23799,18 @@ var NoteBook = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         { className: 'notebook-component' },
-        renderCells
+        renderCells,
+        _react2.default.createElement(
+          'button',
+          {
+            id: 'new-cell-btn',
+            onClick: function onClick() {
+              return _this2.props.newCell('markdown');
+            }
+          },
+          _react2.default.createElement('span', { className: 'fa fa-plus' }),
+          ' New Cell'
+        )
       );
     }
   }]);
@@ -23806,9 +23824,11 @@ function mapStateToProps(_ref2) {
   return { cells: cells };
 }
 
-// function mapDispatchToProps(dispatch) {}
+function mapDispatchToProps(dispatch) {
+  return (0, _redux.bindActionCreators)({ newCell: _CellActions.newCell, deleteCell: _CellActions.deleteCell }, dispatch);
+}
 
-NoteBook = (0, _reactRedux.connect)(mapStateToProps)(NoteBook);
+NoteBook = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NoteBook);
 exports.default = NoteBook;
 
 /***/ }),
@@ -23862,9 +23882,10 @@ var Cell = function (_React$Component) {
           changeCellContent = _props.changeCellContent;
 
       var rows = this.props.children.split('\n').length;
+
       return _react2.default.createElement(
         'div',
-        { className: 'cell-component' },
+        { className: 'cell-component fadeIn' },
         _react2.default.createElement('textarea', {
           className: 'cell-textarea', rows: rows,
           value: this.props.children,
