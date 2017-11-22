@@ -3148,13 +3148,25 @@ var _reactDom = __webpack_require__(64);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var _reactRedux = __webpack_require__(19);
+
+var _reducers = __webpack_require__(96);
+
+var _redux = __webpack_require__(15);
+
 var _App = __webpack_require__(73);
 
 var _App2 = _interopRequireDefault(_App);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_reactDom2.default.render(_react2.default.createElement(_App2.default, null), document.getElementById('main'));
+var store = (0, _redux.createStore)((0, _redux.combineReducers)(_reducers.reducers));
+
+_reactDom2.default.render(_react2.default.createElement(
+  _reactRedux.Provider,
+  { store: store },
+  _react2.default.createElement(_App2.default, null)
+), document.getElementById('main'));
 
 /***/ }),
 /* 62 */
@@ -20453,15 +20465,13 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _redux = __webpack_require__(15);
-
-var _reactRedux = __webpack_require__(19);
-
-var _reducers = __webpack_require__(96);
-
 var _NoteBook = __webpack_require__(139);
 
 var _NoteBook2 = _interopRequireDefault(_NoteBook);
+
+var _FileSystem = __webpack_require__(142);
+
+var _FileSystem2 = _interopRequireDefault(_FileSystem);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20470,8 +20480,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var store = (0, _redux.createStore)((0, _redux.combineReducers)(_reducers.reducers));
 
 var App = function (_React$Component) {
   _inherits(App, _React$Component);
@@ -20486,8 +20494,9 @@ var App = function (_React$Component) {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
-        _reactRedux.Provider,
-        { store: store },
+        'div',
+        { id: 'app-wrapper' },
+        _react2.default.createElement(_FileSystem2.default, null),
         _react2.default.createElement(_NoteBook2.default, null)
       );
     }
@@ -22233,7 +22242,9 @@ exports.reducers = undefined;
 
 var _CellReducers = __webpack_require__(97);
 
-var reducers = exports.reducers = { CellReducers: _CellReducers.CellReducers };
+var _FileSystemReducers = __webpack_require__(143);
+
+var reducers = exports.reducers = { CellReducers: _CellReducers.CellReducers, FileSystemReducers: _FileSystemReducers.FileSystemReducers };
 
 /***/ }),
 /* 97 */
@@ -28507,6 +28518,182 @@ if (true) {
 
 //# sourceMappingURL=showdown.js.map
 
+
+/***/ }),
+/* 142 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _FileSystemActions = __webpack_require__(144);
+
+var _redux = __webpack_require__(15);
+
+var _reactRedux = __webpack_require__(19);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FileSystem = function (_React$Component) {
+  _inherits(FileSystem, _React$Component);
+
+  function FileSystem(props) {
+    _classCallCheck(this, FileSystem);
+
+    return _possibleConstructorReturn(this, (FileSystem.__proto__ || Object.getPrototypeOf(FileSystem)).call(this, props));
+  }
+
+  _createClass(FileSystem, [{
+    key: 'recursiveRenderFolderStructure',
+    value: function recursiveRenderFolderStructure(structure) {
+      var _this2 = this;
+
+      var index = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+      return _react2.default.createElement(
+        'div',
+        { className: 'virtual-folder', key: index },
+        _react2.default.createElement(
+          'p',
+          null,
+          _react2.default.createElement('span', { className: 'fa fa-folder' }),
+          ' ',
+          structure.folderName
+        ),
+        structure.subFolders.map(function (folder, i) {
+          return _this2.recursiveRenderFolderStructure(folder, index + i);
+        })
+      );
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var renderFolderStructure = this.recursiveRenderFolderStructure(this.props.structure);
+
+      return _react2.default.createElement(
+        'div',
+        { className: 'filesystem-component' },
+        renderFolderStructure
+      );
+    }
+  }]);
+
+  return FileSystem;
+}(_react2.default.Component);
+
+function mapStateToProps(_ref) {
+  var _ref$FileSystemReduce = _ref.FileSystemReducers,
+      modal = _ref$FileSystemReduce.modal,
+      structure = _ref$FileSystemReduce.structure,
+      notebooks = _ref$FileSystemReduce.notebooks;
+
+  return { modal: modal, structure: structure, notebooks: notebooks };
+}
+
+function mapDispatchToProps(dispatch) {
+  return (0, _redux.bindActionCreators)({
+    toggleNotebookModal: _FileSystemActions.toggleNotebookModal
+  }, dispatch);
+}
+
+FileSystem = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(FileSystem);
+exports.default = FileSystem;
+
+/***/ }),
+/* 143 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.FileSystemReducers = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _reduxActions = __webpack_require__(44);
+
+var defaultState = {
+  structure: {
+    folderName: 'global',
+    subFolders: [{ folderName: 'test1', subFolders: [] }, { folderName: 'test2', subFolders: [] }, { folderName: 'test3', subFolders: [] }, { folderName: 'test4', subFolders: [{ folderName: 'test6', subFolders: [] }, { folderName: 'test7', subFolders: [] }, { folderName: 'test8', subFolders: [] }] }, { folderName: 'test5', subFolders: [] }]
+  },
+  notebooks: [{
+    id: 1,
+    folder: 'global',
+    name: 'Welcome!'
+  }],
+  modal: { toggle: false, targetFolder: null }
+};
+
+var FileSystemReducers = exports.FileSystemReducers = (0, _reduxActions.handleActions)({
+  TOGGLE_NOTEBOOK_MODAL: function TOGGLE_NOTEBOOK_MODAL(state, _ref) {
+    var _ref$payload = _ref.payload,
+        folder = _ref$payload === undefined ? null : _ref$payload;
+    return _extends({}, state, {
+      modal: { toggle: !state.modal.toggle, targetFolder: folder }
+    });
+  }
+  // NEW_NOTEBOOK: (folder, name) => ({ folder, name }),
+  // RENAME_NOTEBOOK: (id, name) => ({ id, name }),
+  // DELETE_NOTEBOOK: id => id,
+}, defaultState);
+
+/***/ }),
+/* 144 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.deleteNotebook = exports.renameNotebook = exports.newNotebook = exports.toggleNotebookModal = undefined;
+
+var _reduxActions = __webpack_require__(44);
+
+var _createActions = (0, _reduxActions.createActions)({
+  TOGGLE_NOTEBOOK_MODAL: function TOGGLE_NOTEBOOK_MODAL(folder) {
+    return folder;
+  },
+  NEW_NOTEBOOK: function NEW_NOTEBOOK(folder, name) {
+    return { folder: folder, name: name };
+  },
+  RENAME_NOTEBOOK: function RENAME_NOTEBOOK(id, name) {
+    return { id: id, name: name };
+  },
+  DELETE_NOTEBOOK: function DELETE_NOTEBOOK(id) {
+    return id;
+  }
+}),
+    toggleNotebookModal = _createActions.toggleNotebookModal,
+    newNotebook = _createActions.newNotebook,
+    renameNotebook = _createActions.renameNotebook,
+    deleteNotebook = _createActions.deleteNotebook;
+
+exports.toggleNotebookModal = toggleNotebookModal;
+exports.newNotebook = newNotebook;
+exports.renameNotebook = renameNotebook;
+exports.deleteNotebook = deleteNotebook;
 
 /***/ })
 /******/ ]);
