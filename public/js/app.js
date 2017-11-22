@@ -22276,6 +22276,43 @@ var CellReducers = exports.CellReducers = (0, _reduxActions.handleActions)({
     var cellIDCounter = _ref3.cellIDCounter,
         cells = _ref3.cells;
     var id = _ref4.payload;
+
+    var i = void 0;
+    var cell = cells.filter(function (cell, index) {
+      if (cell.id === id) {
+        i = index;
+        return true;
+      }
+      return false;
+    })[0];
+
+    /* Expand the other cell when deleted cell is column type half */
+    if (cell.partial === 'half') {
+      var deleteCellID = void 0,
+          fullCellID = void 0;
+      if (cell.dependent === 'main') {
+        deleteCellID = cell.id;
+        fullCellID = cells[i + 1].id;
+      } else {
+        fullCellID = cells[i - 1].id;
+        deleteCellID = cell.id;
+      }
+
+      return {
+        cellIDCounter: cellIDCounter,
+        cells: cells.filter(function (cell) {
+          return cell.id !== deleteCellID;
+        }).map(function (cell) {
+          if (cell.id === fullCellID) {
+            cell.dependent = null;
+            cell.dependentCellID = null;
+            cell.partial = 'full';
+          }
+          return cell;
+        })
+      };
+    }
+
     return {
       cellIDCounter: cellIDCounter,
       cells: cells.filter(function (cell) {
@@ -24037,7 +24074,14 @@ var Cell = function (_React$Component) {
         _react2.default.createElement(
           'div',
           { className: 'control-panel' },
-          renderCellOperationBtn
+          renderCellOperationBtn,
+          _react2.default.createElement(
+            'button',
+            { onClick: function onClick() {
+                return _this2.props.deleteCell(cellId);
+              } },
+            _react2.default.createElement('span', { className: 'fa fa-trash' })
+          )
         )
       );
     }
@@ -24051,7 +24095,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return (0, _redux.bindActionCreators)({ changeCellContent: _CellActions.changeCellContent, changeCellType: _CellActions.changeCellType, splitCell: _CellActions.splitCell, mergeCell: _CellActions.mergeCell }, dispatch);
+  return (0, _redux.bindActionCreators)({ changeCellContent: _CellActions.changeCellContent, changeCellType: _CellActions.changeCellType, splitCell: _CellActions.splitCell, mergeCell: _CellActions.mergeCell, deleteCell: _CellActions.deleteCell }, dispatch);
 }
 
 Cell = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Cell);
