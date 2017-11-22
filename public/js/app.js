@@ -3080,7 +3080,7 @@ function camelCase(string) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.changeCellType = exports.changeCellContent = exports.deleteCell = exports.newCell = undefined;
+exports.changeCellType = exports.changeCellContent = exports.mergeCell = exports.splitCell = exports.deleteCell = exports.newCell = undefined;
 
 var _reduxActions = __webpack_require__(44);
 
@@ -3091,6 +3091,12 @@ var _createActions = (0, _reduxActions.createActions)({
   DELETE_CELL: function DELETE_CELL(id) {
     return id;
   },
+  SPLIT_CELL: function SPLIT_CELL(id) {
+    return id;
+  },
+  MERGE_CELL: function MERGE_CELL(cellPositionIndex) {
+    return cellPositionIndex;
+  },
   CHANGE_CELL_CONTENT: function CHANGE_CELL_CONTENT(id, content) {
     return { id: id, content: content };
   },
@@ -3100,11 +3106,15 @@ var _createActions = (0, _reduxActions.createActions)({
 }),
     newCell = _createActions.newCell,
     deleteCell = _createActions.deleteCell,
+    splitCell = _createActions.splitCell,
+    mergeCell = _createActions.mergeCell,
     changeCellContent = _createActions.changeCellContent,
     changeCellType = _createActions.changeCellType;
 
 exports.newCell = newCell;
 exports.deleteCell = deleteCell;
+exports.splitCell = splitCell;
+exports.mergeCell = mergeCell;
 exports.changeCellContent = changeCellContent;
 exports.changeCellType = changeCellType;
 
@@ -22231,8 +22241,23 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 var counter = 1;
 
 var defaultState = {
-  cells: [{ id: 1, type: 'markdown', content: '# Welcome!' }],
+  cells: [{
+    id: 1, type: 'markdown', content: '# Welcome!', partial: 'full',
+    dependentCellID: null, dependent: null
+  }],
   cellIDCounter: counter
+};
+
+Array.prototype.select = function (id, callback) {
+  return this.map(function (item, index) {
+    return item.id === id ? callback(item, index) : item;
+  });
+};
+Array.prototype.insert = function (index, item) {
+  this.splice(index, 0, item);
+};
+Array.prototype.remove = function (index) {
+  this.splice(index, 1);
 };
 
 var CellReducers = exports.CellReducers = (0, _reduxActions.handleActions)({
@@ -22241,7 +22266,10 @@ var CellReducers = exports.CellReducers = (0, _reduxActions.handleActions)({
     var type = _ref2.payload;
     return {
       cellIDCounter: ++counter,
-      cells: [].concat(_toConsumableArray(cells), [{ id: counter, type: type, content: 'New Section' }])
+      cells: [].concat(_toConsumableArray(cells), [{
+        id: counter, type: type, content: 'New Section', partial: 'full',
+        dependentCellID: null, dependent: null
+      }])
     };
   },
   DELETE_CELL: function DELETE_CELL(_ref3, _ref4) {
@@ -22255,28 +22283,76 @@ var CellReducers = exports.CellReducers = (0, _reduxActions.handleActions)({
       })
     };
   },
-  CHANGE_CELL_CONTENT: function CHANGE_CELL_CONTENT(state, _ref5) {
-    var _ref5$payload = _ref5.payload,
-        id = _ref5$payload.id,
-        content = _ref5$payload.content;
+  SPLIT_CELL: function SPLIT_CELL(state, _ref5) {
+    var id = _ref5.payload;
+
+    var type = void 0,
+        i = void 0;
+
+    var result = _extends({}, state, {
+      cells: state.cells.select(id, function (cell, index) {
+        cell.partial = 'half';
+        type = cell.type;
+        i = index;
+        cell.dependentCellID = i + 1;
+        cell.dependent = 'main';
+        return cell;
+      })
+    });
+    result.cells.insert(i + 1, { id: ++counter, type: type, content: 'New Section', partial: 'half', dependentCellID: i, dependent: 'sub' });
+    return result;
+  },
+  MERGE_CELL: function MERGE_CELL(state, _ref6) {
+    var cellPositionIndex = _ref6.payload;
+
+    var selectedCell = state.cells[cellPositionIndex];
+    var updateContent = void 0,
+        updateContentCellID = void 0,
+        filterCellID = void 0;
+    if (selectedCell.dependent === 'main') {
+      updateContent = selectedCell.content + '\n' + state.cells[cellPositionIndex + 1].content;
+      updateContentCellID = selectedCell.id;
+      filterCellID = cellPositionIndex + 1;
+    } else if (selectedCell.dependent === 'sub') {
+      var mainCell = state.cells[cellPositionIndex - 1];
+      updateContent = mainCell.content + '\n' + selectedCell.content;
+      updateContentCellID = mainCell.id;
+      filterCellID = cellPositionIndex;
+    }
+
     return _extends({}, state, {
       cells: state.cells.map(function (cell) {
-        if (cell.id === id) {
-          cell.content = content;
+        if (updateContentCellID === cell.id) {
+          cell.content = updateContent;
+          cell.partial = 'full';
+          cell.dependentCellID = null;
+          cell.dependent = null;
         }
+        return cell;
+      }).filter(function (_, index) {
+        return index !== filterCellID;
+      })
+    });
+    return state;
+  },
+  CHANGE_CELL_CONTENT: function CHANGE_CELL_CONTENT(state, _ref7) {
+    var _ref7$payload = _ref7.payload,
+        id = _ref7$payload.id,
+        content = _ref7$payload.content;
+    return _extends({}, state, {
+      cells: state.cells.select(id, function (cell) {
+        cell.content = content;
         return cell;
       })
     });
   },
-  CHANGE_CELL_TYPE: function CHANGE_CELL_TYPE(state, _ref6) {
-    var _ref6$payload = _ref6.payload,
-        id = _ref6$payload.id,
-        type = _ref6$payload.type;
+  CHANGE_CELL_TYPE: function CHANGE_CELL_TYPE(state, _ref8) {
+    var _ref8$payload = _ref8.payload,
+        id = _ref8$payload.id,
+        type = _ref8$payload.type;
     return _extends({}, state, {
-      cells: state.cells.map(function (cell) {
-        if (cell.id === id) {
-          cell.type = type;
-        }
+      cells: state.cells.select(id, function (cell) {
+        cell.type = type;
         return cell;
       })
     });
@@ -23823,13 +23899,16 @@ var NoteBook = function (_React$Component) {
 
       var cells = this.props.cells;
 
-      var renderCells = cells.map(function (_ref) {
+      var renderCells = cells.map(function (_ref, index) {
         var id = _ref.id,
             type = _ref.type,
-            content = _ref.content;
+            content = _ref.content,
+            partial = _ref.partial,
+            dependentCellID = _ref.dependentCellID,
+            dependent = _ref.dependent;
         return _react2.default.createElement(
           _Cell2.default,
-          { key: id, cellId: id, type: type },
+          { key: id, index: index, cellId: id, type: type, partial: partial, dependentCellID: dependentCellID, dependent: dependent },
           content
         );
       });
@@ -23863,7 +23942,7 @@ function mapStateToProps(_ref2) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return (0, _redux.bindActionCreators)({ newCell: _CellActions.newCell, deleteCell: _CellActions.deleteCell }, dispatch);
+  return (0, _redux.bindActionCreators)({ newCell: _CellActions.newCell }, dispatch);
 }
 
 NoteBook = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NoteBook);
@@ -23914,16 +23993,35 @@ var Cell = function (_React$Component) {
   _createClass(Cell, [{
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       var _props = this.props,
           cellId = _props.cellId,
+          index = _props.index,
           type = _props.type,
-          changeCellContent = _props.changeCellContent;
+          changeCellContent = _props.changeCellContent,
+          partial = _props.partial,
+          dependentCellID = _props.dependentCellID,
+          dependent = _props.dependent;
 
       var rows = this.props.children.split('\n').length;
+      var renderCellOperationBtn = partial === 'full' ? _react2.default.createElement(
+        'button',
+        { onClick: function onClick() {
+            return _this2.props.splitCell(cellId);
+          } },
+        _react2.default.createElement('span', { className: 'fa fa-columns' })
+      ) : _react2.default.createElement(
+        'button',
+        { onClick: function onClick() {
+            return _this2.props.mergeCell(index);
+          } },
+        _react2.default.createElement('span', { className: 'fa fa-compress' })
+      );
 
       return _react2.default.createElement(
         'div',
-        { className: 'cell-component fadeIn' },
+        { className: 'cell-component fadeIn col-' + partial + ' ' + (partial === 'half' ? 'col-' + dependent : '') },
         _react2.default.createElement('textarea', {
           className: 'cell-textarea', rows: rows,
           value: this.props.children,
@@ -23935,7 +24033,12 @@ var Cell = function (_React$Component) {
         _react2.default.createElement('div', {
           className: 'cell-content ' + type,
           dangerouslySetInnerHTML: { __html: new _showdown.Converter().makeHtml(this.props.children) }
-        })
+        }),
+        _react2.default.createElement(
+          'div',
+          { className: 'control-panel' },
+          renderCellOperationBtn
+        )
       );
     }
   }]);
@@ -23948,7 +24051,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return (0, _redux.bindActionCreators)({ changeCellContent: _CellActions.changeCellContent, changeCellType: _CellActions.changeCellType }, dispatch);
+  return (0, _redux.bindActionCreators)({ changeCellContent: _CellActions.changeCellContent, changeCellType: _CellActions.changeCellType, splitCell: _CellActions.splitCell, mergeCell: _CellActions.mergeCell }, dispatch);
 }
 
 Cell = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Cell);

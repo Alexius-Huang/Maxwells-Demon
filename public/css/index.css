@@ -18,15 +18,31 @@ button:focus, a:focus, input:focus {
 
 .notebook-component {
   padding: 20pt;
+  font-size: 0;
 }
 
 .cell-component {
-  width: 100%;
+  font-size: 12pt;
+  display: inline-block;
+  vertical-align: top;
   padding: 5pt;
   box-sizing: border-box;
   border: 1pt solid #777;
 }
-.cell-component + .cell-component {
+
+.cell-component.col-full {
+  width: 100%;
+}
+.cell-component.col-half.col-main,
+.cell-component.col-half.col-sub {
+  width: calc(50% - 5pt);
+}
+.cell-component.col-half.col-sub {
+  margin-left: 10pt;
+}
+
+.cell-component.col-half,
+.cell-component.col-full {
   margin-top: 10pt;
 }
 
@@ -69,6 +85,24 @@ button:focus, a:focus, input:focus {
 }
 .cell-content.markdown a {
   color: #ccc;
+}
+
+.cell-component > div.control-panel {
+  margin: 10pt -5pt -5pt 0;
+  text-align: right;
+}
+.cell-component > div.control-panel > button {
+  background-color: #444;
+  border-left: 1pt solid #777;
+  border-top: 1pt solid #777;
+  transition: .25s;
+  padding: 3pt 5pt;
+  font-size: 10pt;
+}
+.cell-component > div.control-panel > button:hover {
+  background-color: #ddd;
+  color: #333;
+  transition: .25s;
 }
 
 button#new-cell-btn {
