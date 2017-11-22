@@ -3080,7 +3080,7 @@ function camelCase(string) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.changeCellType = exports.changeCellContent = exports.mergeCell = exports.splitCell = exports.deleteCell = exports.newCell = undefined;
+exports.showCell = exports.hideCell = exports.hideCellTextarea = exports.changeCellType = exports.changeCellContent = exports.mergeCell = exports.splitCell = exports.deleteCell = exports.newCell = undefined;
 
 var _reduxActions = __webpack_require__(44);
 
@@ -3102,6 +3102,15 @@ var _createActions = (0, _reduxActions.createActions)({
   },
   CHANGE_CELL_TYPE: function CHANGE_CELL_TYPE(id, type) {
     return { id: id, type: type };
+  },
+  HIDE_CELL_TEXTAREA: function HIDE_CELL_TEXTAREA(id) {
+    return id;
+  },
+  HIDE_CELL: function HIDE_CELL(id) {
+    return id;
+  },
+  SHOW_CELL: function SHOW_CELL(id) {
+    return id;
   }
 }),
     newCell = _createActions.newCell,
@@ -3109,7 +3118,10 @@ var _createActions = (0, _reduxActions.createActions)({
     splitCell = _createActions.splitCell,
     mergeCell = _createActions.mergeCell,
     changeCellContent = _createActions.changeCellContent,
-    changeCellType = _createActions.changeCellType;
+    changeCellType = _createActions.changeCellType,
+    hideCellTextarea = _createActions.hideCellTextarea,
+    hideCell = _createActions.hideCell,
+    showCell = _createActions.showCell;
 
 exports.newCell = newCell;
 exports.deleteCell = deleteCell;
@@ -3117,6 +3129,9 @@ exports.splitCell = splitCell;
 exports.mergeCell = mergeCell;
 exports.changeCellContent = changeCellContent;
 exports.changeCellType = changeCellType;
+exports.hideCellTextarea = hideCellTextarea;
+exports.hideCell = hideCell;
+exports.showCell = showCell;
 
 /***/ }),
 /* 61 */
@@ -22243,7 +22258,7 @@ var counter = 1;
 var defaultState = {
   cells: [{
     id: 1, type: 'markdown', content: '# Welcome!', partial: 'full',
-    dependentCellID: null, dependent: null
+    dependentCellID: null, dependent: null, hide: false
   }],
   cellIDCounter: counter
 };
@@ -22268,7 +22283,7 @@ var CellReducers = exports.CellReducers = (0, _reduxActions.handleActions)({
       cellIDCounter: ++counter,
       cells: [].concat(_toConsumableArray(cells), [{
         id: counter, type: type, content: 'New Section', partial: 'full',
-        dependentCellID: null, dependent: null
+        dependentCellID: null, dependent: null, hide: false
       }])
     };
   },
@@ -22288,15 +22303,8 @@ var CellReducers = exports.CellReducers = (0, _reduxActions.handleActions)({
 
     /* Expand the other cell when deleted cell is column type half */
     if (cell.partial === 'half') {
-      var deleteCellID = void 0,
-          fullCellID = void 0;
-      if (cell.dependent === 'main') {
-        deleteCellID = cell.id;
-        fullCellID = cells[i + 1].id;
-      } else {
-        fullCellID = cells[i - 1].id;
-        deleteCellID = cell.id;
-      }
+      var deleteCellID = cell.id;
+      var fullCellID = cells[cell.dependent === 'main' ? i + 1 : i - 1].id;
 
       return {
         cellIDCounter: cellIDCounter,
@@ -22336,7 +22344,7 @@ var CellReducers = exports.CellReducers = (0, _reduxActions.handleActions)({
         return cell;
       })
     });
-    result.cells.insert(i + 1, { id: ++counter, type: type, content: 'New Section', partial: 'half', dependentCellID: i, dependent: 'sub' });
+    result.cells.insert(i + 1, { id: ++counter, type: type, content: 'New Section', partial: 'half', dependentCellID: i, dependent: 'sub', hide: false });
     return result;
   },
   MERGE_CELL: function MERGE_CELL(state, _ref6) {
@@ -22390,6 +22398,33 @@ var CellReducers = exports.CellReducers = (0, _reduxActions.handleActions)({
     return _extends({}, state, {
       cells: state.cells.select(id, function (cell) {
         cell.type = type;
+        return cell;
+      })
+    });
+  },
+  HIDE_CELL_TEXTAREA: function HIDE_CELL_TEXTAREA(state, _ref9) {
+    var id = _ref9.payload;
+    return _extends({}, state, {
+      cells: state.cells.select(id, function (cell) {
+        cell.hide = 'textarea';
+        return cell;
+      })
+    });
+  },
+  HIDE_CELL: function HIDE_CELL(state, _ref10) {
+    var id = _ref10.payload;
+    return _extends({}, state, {
+      cells: state.cells.select(id, function (cell) {
+        cell.hide = 'all';
+        return cell;
+      })
+    });
+  },
+  SHOW_CELL: function SHOW_CELL(state, _ref11) {
+    var id = _ref11.payload;
+    return _extends({}, state, {
+      cells: state.cells.select(id, function (cell) {
+        cell.hide = false;
         return cell;
       })
     });
@@ -23942,10 +23977,11 @@ var NoteBook = function (_React$Component) {
             content = _ref.content,
             partial = _ref.partial,
             dependentCellID = _ref.dependentCellID,
-            dependent = _ref.dependent;
+            dependent = _ref.dependent,
+            hide = _ref.hide;
         return _react2.default.createElement(
           _Cell2.default,
-          { key: id, index: index, cellId: id, type: type, partial: partial, dependentCellID: dependentCellID, dependent: dependent },
+          { key: id, index: index, cellId: id, type: type, partial: partial, dependentCellID: dependentCellID, dependent: dependent, hide: hide },
           content
         );
       });
@@ -24039,9 +24075,39 @@ var Cell = function (_React$Component) {
           changeCellContent = _props.changeCellContent,
           partial = _props.partial,
           dependentCellID = _props.dependentCellID,
-          dependent = _props.dependent;
+          dependent = _props.dependent,
+          hide = _props.hide;
 
       var rows = this.props.children.split('\n').length;
+
+      var renderTextareaVisibilityBtn = !hide ? _react2.default.createElement(
+        'button',
+        { onClick: function onClick() {
+            return _this2.props.hideCellTextarea(cellId);
+          } },
+        _react2.default.createElement('span', { className: 'fa fa-angle-up' })
+      ) : _react2.default.createElement(
+        'button',
+        { onClick: function onClick() {
+            return _this2.props.showCell(cellId);
+          } },
+        _react2.default.createElement('span', { className: 'fa fa-angle-down' })
+      );
+
+      var renderCellVisibilityBtn = hide !== 'all' ? _react2.default.createElement(
+        'button',
+        { onClick: function onClick() {
+            return _this2.props.hideCell(cellId);
+          } },
+        _react2.default.createElement('span', { className: 'fa fa-angle-double-up' })
+      ) : _react2.default.createElement(
+        'button',
+        { onClick: function onClick() {
+            return _this2.props.showCell(cellId);
+          } },
+        _react2.default.createElement('span', { className: 'fa fa-angle-double-down' })
+      );
+
       var renderCellOperationBtn = partial === 'full' ? _react2.default.createElement(
         'button',
         { onClick: function onClick() {
@@ -24056,24 +24122,40 @@ var Cell = function (_React$Component) {
         _react2.default.createElement('span', { className: 'fa fa-compress' })
       );
 
+      var renderTextarea = !hide ? _react2.default.createElement('textarea', {
+        className: 'cell-textarea', rows: rows,
+        value: this.props.children,
+        onChange: function onChange(_ref) {
+          var value = _ref.target.value;
+          return changeCellContent(cellId, value);
+        }
+      }) : undefined;
+
+      var renderContent = _react2.default.createElement('div', {
+        className: 'cell-content ' + type + ' ' + (hide !== 'all' ? '' : 'hidden-content'),
+        dangerouslySetInnerHTML: { __html: new _showdown.Converter().makeHtml(this.props.children) }
+      });
+
+      var renderExpandAllCellBtn = hide === 'all' ? _react2.default.createElement(
+        'button',
+        { id: 'expand-all-cell-btn', onClick: function onClick() {
+            return _this2.props.showCell(cellId);
+          } },
+        _react2.default.createElement('span', { className: 'fa fa-angle-double-down' }),
+        ' Show More'
+      ) : undefined;
+
       return _react2.default.createElement(
         'div',
         { className: 'cell-component fadeIn col-' + partial + ' ' + (partial === 'half' ? 'col-' + dependent : '') },
-        _react2.default.createElement('textarea', {
-          className: 'cell-textarea', rows: rows,
-          value: this.props.children,
-          onChange: function onChange(_ref) {
-            var value = _ref.target.value;
-            return changeCellContent(cellId, value);
-          }
-        }),
-        _react2.default.createElement('div', {
-          className: 'cell-content ' + type,
-          dangerouslySetInnerHTML: { __html: new _showdown.Converter().makeHtml(this.props.children) }
-        }),
+        renderTextarea,
+        renderContent,
+        renderExpandAllCellBtn,
         _react2.default.createElement(
           'div',
           { className: 'control-panel' },
+          renderTextareaVisibilityBtn,
+          renderCellVisibilityBtn,
           renderCellOperationBtn,
           _react2.default.createElement(
             'button',
@@ -24095,7 +24177,16 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return (0, _redux.bindActionCreators)({ changeCellContent: _CellActions.changeCellContent, changeCellType: _CellActions.changeCellType, splitCell: _CellActions.splitCell, mergeCell: _CellActions.mergeCell, deleteCell: _CellActions.deleteCell }, dispatch);
+  return (0, _redux.bindActionCreators)({
+    changeCellContent: _CellActions.changeCellContent,
+    changeCellType: _CellActions.changeCellType,
+    splitCell: _CellActions.splitCell,
+    mergeCell: _CellActions.mergeCell,
+    deleteCell: _CellActions.deleteCell,
+    showCell: _CellActions.showCell,
+    hideCell: _CellActions.hideCell,
+    hideCellTextarea: _CellActions.hideCellTextarea
+  }, dispatch);
 }
 
 Cell = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Cell);

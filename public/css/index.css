@@ -66,7 +66,23 @@ button:focus, a:focus, input:focus {
 }
 .cell-component > .cell-content {
   padding: 5pt 5pt 0 5pt;
+  box-sizing: border-box;
   white-space: pre;
+}
+.cell-component > .cell-content.hidden-content {
+  max-height: 75pt;
+  overflow-y: hidden;
+  position: relative;
+}
+.cell-component > .cell-content.hidden-content:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 75pt;
+  background: linear-gradient(transparent 70%, #333);
 }
 
 .cell-content.markdown h1,
@@ -119,6 +135,20 @@ button#new-cell-btn {
 button#new-cell-btn:hover {
   background-color: #ddd;
   color: #333;
+  transition: .25s;
+}
+
+button#expand-all-cell-btn {
+  display: block;
+  font-size: 12pt;
+  padding: 7.5pt 0;
+  margin: 7.5pt -5pt 0 -5pt;
+  text-align: center;
+  width: calc(100% + 10pt);
+  transition: .25s;
+}
+button#expand-all-cell-btn:hover {
+  background-color: #444;
   transition: .25s;
 }
 
