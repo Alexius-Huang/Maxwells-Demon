@@ -1,8 +1,10 @@
+/* The height of navigation bar is 30pt */
 .notebook-component {
   display: inline-block;
   padding: 20pt;
+  margin-top: 30pt;
   font-size: 0;
-  height: 100vh;
+  height: calc(100vh - 30pt);
   width: calc(100% - 300px);
   box-sizing: border-box;
   overflow-y: auto;
@@ -17,6 +19,7 @@
   box-sizing: border-box;
   border: 1pt solid #777;
   transition: background-color .25s;
+  box-shadow: 0pt 10pt 10pt -10pt #777;
 }
 
 .cell-component:hover {
@@ -87,6 +90,10 @@
 .cell-content.markdown h6 {
   margin: 0;
   border-bottom: 1pt solid #666;
+}
+.cell-content.markdown > * {
+  max-width: 100%;
+  overflow: auto;
 }
 
 .cell-content.markdown p {

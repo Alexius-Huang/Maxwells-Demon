@@ -38,129 +38,78 @@ input {
 .cancel:hover  { color: #ff9494; }
 
 #app-wrapper {
+  position: relative;
   font-size: 0;
 }
 
-.filesystem-component {
-  width: 300px;
-  height: 100vh;
-  box-sizing: border-box;
-  padding: 20pt;
+nav#top-navigation-bar {
+  position: absolute;
+  left: 300px;
+  top: 0;
   display: inline-block;
+  width: calc(100vw - 300px);
+  height: 30pt;
   background-color: #222;
-  overflow: auto;
+  box-shadow: 5pt 10pt 10pt -10pt #777;
 }
 
-p.virtual-folder-name, p.virtual-notebook-name {
-  font-size: 10pt;
-  height: 25pt;
-  line-height: 25pt;
-  font-family: 'Roboto Mono', monospace;
-  margin: 0;
-  padding: 0 0 0 7.5pt;
-  position: relative;
-}
-p.virtual-notebook-name {
-  margin-left: 10pt;
-}
-.virtual-notebook-name,
-.virtual-folder > .virtual-folder {
-  margin-left: 10pt;
-}
-
-.virtual-folder-new-input-wrapper,
-.notebook-new-input-wrapper {
-  margin-left: 10pt;
-  height: 25pt;
-  width: calc(100% );
-  background-color: transparent;
-  position: relative;
-}
-.virtual-folder-new-input,
-.notebook-new-input {
-  height: 25pt;
-  background-color: transparent;
-  border-bottom: 2pt solid #333;
-  line-height: 25pt;
-  width: calc(100% - 20pt);
-  transition: .25s;
-}
-.virtual-folder-new-input:hover,
-.notebook-new-input:hover {
-  background-color: #333;
-  border-bottom-color: #444;
-  transition: .25s;
-}
-.virtual-folder-new-input:focus,
-.notebook-new-input:focus {
-  background-color: #444;
-  border-bottom-color: #666;
-  transition: .25s;
-}
-.virtual-folder-input-confirm, .virtual-folder-input-cancel,
-.notebook-input-confirm, .notebook-input-cancel {
-  position: absolute;
-  top: 0;
-  width: 25pt;
-  height: 25pt;
-  line-height: 25pt;
-  font-size: 10pt;
-  background-color: transparent;
-}
-.virtual-folder-input-confirm,
-.notebook-input-confirm { right: 35pt; }
-.virtual-folder-input-cancel,
-.notebook-input-cancel  { right: 10pt; }
-
-
-.virtual-folder[data-expand="false"] > p.virtual-notebook-name,
-.virtual-folder[data-expand="false"] > .virtual-folder-new-input-wrapper,
-.virtual-folder[data-expand="false"] > .virtual-folder,
-.virtual-folder-new-input-wrapper.hide,
-.notebook-new-input-wrapper.hide {
-  display: none;
-}
-
-p.virtual-folder-name:hover, p.virtual-notebook-name:hover {
-  background-color: #555;
-  transition: .25s;
-}
-
-p.virtual-folder-name:hover > button.new-folder,
-p.virtual-folder-name:hover > button.new-file {
-  opacity: 1;
-  pointer-events: auto;
-  transition: .25s;
-}
-button.new-folder, button.new-file {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-  background-color: transparent;
-  border: none;
-  top: 0;
-  height: 25pt;
-  width: 25pt;
-  padding: 0;
+nav#top-navigation-bar > div.btn-wrapper {
   box-sizing: border-box;
+  width: 100%;
+  height: 30pt;
+  padding-top: 2.5pt;
   text-align: center;
+}
+nav#top-navigation-bar > div.btn-wrapper > button {
+  box-sizing: border-box;
+  width: 25pt;
+  height: 25pt;
   line-height: 25pt;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  background-color: transparent;
+  border: 1pt solid #444;
   transition: .25s;
+  font-size: 10pt;
+  position: relative;
 }
-button.new-file   { right: 0; }
-button.new-folder { right: 25pt; }
-button.new-folder > span.fa { font-size: 10pt; }
-button.new-folder > span.fa.fa-plus,
-button.new-file > span.fa.fa-plus {
-  position: absolute;
-  right: 4pt;
-  top: 6pt;
-  font-size: 8pt;
-}
-button.new-folder:hover, button.new-file:hover {
-  background-color: white;
+nav#top-navigation-bar > div.btn-wrapper > button:hover {
   color: #333;
+  background-color: #eee;
   transition: .25s;
+}
+nav#top-navigation-bar > div.btn-wrapper > button + button {
+  border-left: none;
+}
+nav#top-navigation-bar > div.btn-wrapper > button > .nav-tooltip {
+  opacity: 0;
+  color: #333;
+  position: absolute;
+  display: inline-block;
+  background-color: #eee;
+  width: 100pt;
+  height: 30pt;
+  line-height: 30pt;
+  bottom: -40pt;
+  left: -37.5pt;
+  pointer-events: none;
+  transition: .25s;
+}
+nav#top-navigation-bar > div.btn-wrapper > button:hover > .nav-tooltip {
+  opacity: 1;
+  transition: .25s;
+}
+nav#top-navigation-bar > div.btn-wrapper > button:hover > .nav-tooltip:before {
+  content: '';
+  position: absolute;
+  top: -5pt;
+  left: 40pt;
+  width: 0;
+  height: 0;
+  border-left:   10pt solid transparent;
+  border-right:  10pt solid transparent;
+  border-bottom: 15pt solid #eee;
 }
 
 .fadeIn {
