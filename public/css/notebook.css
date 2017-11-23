@@ -104,11 +104,11 @@
   color: #ccc;
 }
 
-.cell-component > div.control-panel {
+.cell-component > div.cell-component-tools {
   margin: 10pt -5pt -5pt 0;
   text-align: right;
 }
-.cell-component > div.control-panel > button {
+.cell-component > div.cell-component-tools > button {
   background-color: #444;
   border-left: 1pt solid #777;
   border-top: 1pt solid #777;
@@ -116,7 +116,7 @@
   padding: 3pt 5pt;
   font-size: 10pt;
 }
-.cell-component > div.control-panel > button:hover {
+.cell-component > div.cell-component-tools > button:hover {
   background-color: #ddd;
   color: #333;
   transition: .25s;
