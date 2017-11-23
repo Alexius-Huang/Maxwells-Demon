@@ -47,7 +47,7 @@
   background-color: #333;
   border: 1pt solid #777;
   box-sizing: border-box;
-  font-family: monospace;
+  font-family: 'Roboto Mono', monospace;
   font-size: 14px;
   padding: 3pt 5pt;
   transition: .25s;
@@ -118,12 +118,13 @@
 button#new-cell-btn {
   display: block;
   margin: 10pt auto 0 auto;
-  background-color: #555;
+  background-color: #333;
+  border: 1pt solid #777;
   padding: 0;
   width: 100pt;
   font-size: 10pt;
-  height: 25pt;
-  line-height: 25pt;
+  height: 35pt;
+  line-height: 35pt;
   transition: .25s;
 }
 button#new-cell-btn:hover {

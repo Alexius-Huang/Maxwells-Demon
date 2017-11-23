@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:400,700');
+@import url('https://fonts.googleapis.com/css?family=PT+Serif:400,700');
+
 html, body {
   height: 100vh;
   width: 100vw;
@@ -5,6 +8,7 @@ html, body {
   color: #ddd;
   margin: 0;
   padding: 0;
+  font-family: 'PT Serif', sans-serif;
 }
 
 button, a {
@@ -51,7 +55,7 @@ p.virtual-folder-name, p.virtual-notebook-name {
   font-size: 10pt;
   height: 25pt;
   line-height: 25pt;
-  font-family: monospace;
+  font-family: 'Roboto Mono', monospace;
   margin: 0;
   padding: 0 0 0 7.5pt;
   position: relative;
@@ -64,14 +68,16 @@ p.virtual-notebook-name {
   margin-left: 10pt;
 }
 
-.virtual-folder-new-input-wrapper {
+.virtual-folder-new-input-wrapper,
+.notebook-new-input-wrapper {
   margin-left: 10pt;
   height: 25pt;
   width: calc(100% );
   background-color: transparent;
   position: relative;
 }
-.virtual-folder-new-input {
+.virtual-folder-new-input,
+.notebook-new-input {
   height: 25pt;
   background-color: transparent;
   border-bottom: 2pt solid #333;
@@ -79,17 +85,20 @@ p.virtual-notebook-name {
   width: calc(100% - 20pt);
   transition: .25s;
 }
-.virtual-folder-new-input:hover {
+.virtual-folder-new-input:hover,
+.notebook-new-input:hover {
   background-color: #333;
   border-bottom-color: #444;
   transition: .25s;
 }
-.virtual-folder-new-input:focus {
+.virtual-folder-new-input:focus,
+.notebook-new-input:focus {
   background-color: #444;
   border-bottom-color: #666;
   transition: .25s;
 }
-.virtual-folder-input-confirm, .virtual-folder-input-cancel {
+.virtual-folder-input-confirm, .virtual-folder-input-cancel,
+.notebook-input-confirm, .notebook-input-cancel {
   position: absolute;
   top: 0;
   width: 25pt;
@@ -98,14 +107,17 @@ p.virtual-notebook-name {
   font-size: 10pt;
   background-color: transparent;
 }
-.virtual-folder-input-confirm { right: 35pt; }
-.virtual-folder-input-cancel  { right: 10pt; }
+.virtual-folder-input-confirm,
+.notebook-input-confirm { right: 35pt; }
+.virtual-folder-input-cancel,
+.notebook-input-cancel  { right: 10pt; }
 
 
 .virtual-folder[data-expand="false"] > p.virtual-notebook-name,
 .virtual-folder[data-expand="false"] > .virtual-folder-new-input-wrapper,
 .virtual-folder[data-expand="false"] > .virtual-folder,
-.virtual-folder-new-input-wrapper.hide {
+.virtual-folder-new-input-wrapper.hide,
+.notebook-new-input-wrapper.hide {
   display: none;
 }
 
