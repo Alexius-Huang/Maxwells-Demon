@@ -26,6 +26,13 @@ input {
   padding: 0 5pt;
 }
 
+.confirm, .cancel,
+.confirm:hover, .cancel:hover { transition: .25s; }
+.confirm { color: #3fff2e; }
+.cancel  { color: #ff4040; }
+.confirm:hover { color: #acffa4; }
+.cancel:hover  { color: #ff9494; }
+
 #app-wrapper {
   font-size: 0;
 }
@@ -34,32 +41,113 @@ input {
   width: 300px;
   height: 100vh;
   box-sizing: border-box;
-  padding: 10pt 20pt;
+  padding: 20pt;
   display: inline-block;
   background-color: #222;
   overflow: auto;
 }
 
-.virtual-folder p, .virtual-notebook {
+p.virtual-folder-name, p.virtual-notebook-name {
   font-size: 10pt;
+  height: 25pt;
+  line-height: 25pt;
   font-family: monospace;
+  margin: 0;
+  padding: 0 0 0 7.5pt;
+  position: relative;
 }
-.virtual-notebook,
+p.virtual-notebook-name {
+  margin-left: 10pt;
+}
+.virtual-notebook-name,
 .virtual-folder > .virtual-folder {
   margin-left: 10pt;
 }
-.virtual-folder[data-expand="false"] > .virtual-notebook,
-.virtual-folder[data-expand="false"] > .virtual-folder {
-  display: none;
-}
 
-.virtual-folder-new-input {
+.virtual-folder-new-input-wrapper {
   margin-left: 10pt;
+  height: 25pt;
+  width: calc(100% );
+  background-color: transparent;
+  position: relative;
+}
+.virtual-folder-new-input {
+  height: 25pt;
+  background-color: transparent;
+  border-bottom: 2pt solid #333;
+  line-height: 25pt;
   width: calc(100% - 20pt);
   transition: .25s;
 }
+.virtual-folder-new-input:hover {
+  background-color: #333;
+  border-bottom-color: #444;
+  transition: .25s;
+}
 .virtual-folder-new-input:focus {
+  background-color: #444;
+  border-bottom-color: #666;
+  transition: .25s;
+}
+.virtual-folder-input-confirm, .virtual-folder-input-cancel {
+  position: absolute;
+  top: 0;
+  width: 25pt;
+  height: 25pt;
+  line-height: 25pt;
+  font-size: 10pt;
+  background-color: transparent;
+}
+.virtual-folder-input-confirm { right: 35pt; }
+.virtual-folder-input-cancel  { right: 10pt; }
+
+
+.virtual-folder[data-expand="false"] > p.virtual-notebook-name,
+.virtual-folder[data-expand="false"] > .virtual-folder-new-input-wrapper,
+.virtual-folder[data-expand="false"] > .virtual-folder,
+.virtual-folder-new-input-wrapper.hide {
+  display: none;
+}
+
+p.virtual-folder-name:hover, p.virtual-notebook-name:hover {
   background-color: #555;
+  transition: .25s;
+}
+
+p.virtual-folder-name:hover > button.new-folder,
+p.virtual-folder-name:hover > button.new-file {
+  opacity: 1;
+  pointer-events: auto;
+  transition: .25s;
+}
+button.new-folder, button.new-file {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  background-color: transparent;
+  border: none;
+  top: 0;
+  height: 25pt;
+  width: 25pt;
+  padding: 0;
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 25pt;
+  transition: .25s;
+}
+button.new-file   { right: 0; }
+button.new-folder { right: 25pt; }
+button.new-folder > span.fa { font-size: 10pt; }
+button.new-folder > span.fa.fa-plus,
+button.new-file > span.fa.fa-plus {
+  position: absolute;
+  right: 4pt;
+  top: 6pt;
+  font-size: 8pt;
+}
+button.new-folder:hover, button.new-file:hover {
+  background-color: white;
+  color: #333;
   transition: .25s;
 }
 
