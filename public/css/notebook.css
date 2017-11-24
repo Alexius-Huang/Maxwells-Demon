@@ -82,25 +82,25 @@
   background: linear-gradient(transparent 70%, #333);
 }
 
-.cell-content.markdown h1,
-.cell-content.markdown h2,
-.cell-content.markdown h3,
-.cell-content.markdown h4,
-.cell-content.markdown h5,
-.cell-content.markdown h6 {
+.cell-content.Markdown h1,
+.cell-content.Markdown h2,
+.cell-content.Markdown h3,
+.cell-content.Markdown h4,
+.cell-content.Markdown h5,
+.cell-content.Markdown h6 {
   margin: 0;
   border-bottom: 1pt solid #666;
 }
-.cell-content.markdown > * {
+.cell-content.Markdown > * {
   max-width: 100%;
   overflow: auto;
 }
 
-.cell-content.markdown p {
+.cell-content.Markdown p {
   margin: 0;
   line-height: 16pt;
 }
-.cell-content.markdown a {
+.cell-content.Markdown a {
   color: #ccc;
 }
 
@@ -113,8 +113,14 @@
   border-left: 1pt solid #777;
   border-top: 1pt solid #777;
   transition: .25s;
-  padding: 3pt 5pt;
+  padding: 0;
+  margin: 0;
   font-size: 10pt;
+  text-align: center;
+  line-height: 20pt;
+  height: 20pt;
+  width: 20pt;
+  vertical-align: bottom;
 }
 .cell-component > div.cell-component-tools > button:hover {
   background-color: #ddd;
@@ -144,7 +150,7 @@ button#expand-all-cell-btn {
   display: block;
   font-size: 12pt;
   padding: 7.5pt 0;
-  margin: 7.5pt -5pt 0 -5pt;
+  margin: 7.5pt -pt 0 -pt;
   text-align: center;
   width: calc(100% + 10pt);
   transition: .25s;
@@ -152,4 +158,54 @@ button#expand-all-cell-btn {
 button#expand-all-cell-btn:hover {
   background-color: #444;
   transition: .25s;
+}
+
+.cell-component > div.cell-component-tools > div.cell-type-field {
+  display: inline-block;
+  width: 81pt;
+  height: 20pt;
+  background-color: #444;
+  border-left: 1pt solid #777;
+  border-top: 1pt solid #777;
+  vertical-align: bottom;
+  padding: 0;
+  margin: 0;
+  font-size: 0;
+  box-sizing: border-box;
+  transition: .25s;
+  position: relative;
+}
+.cell-component > div.cell-component-tools > div.cell-type-field > span.cell-type {
+  display: inline-block;
+  font-family: 'Roboto Mono', monospace;
+  height: 20pt;
+  width: 72.5pt;
+  margin-right: 7.5pt;
+  line-height: 20pt;
+  font-size: 8pt;
+  vertical-align: top;
+}
+.cell-component > div.cell-component-tools > div.cell-type-field:hover {
+  background-color: #333;
+  transition: .25s;
+}
+.cell-component > div.cell-component-tools > div.cell-type-field > ul.lang-options {
+  position: absolute;
+  display: inline-block;
+  background-color: #222;
+  width: 80pt;
+  top: 21pt;
+  left: 0;
+}
+.cell-component > div.cell-component-tools > div.cell-type-field > ul.lang-options > li {
+  font-size: 10pt;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 8pt;
+  height: 15pt;
+  line-height: 15pt;
+  padding-right: 5pt;
+}
+.cell-component > div.cell-component-tools > div.cell-type-field > ul.lang-options > li:hover {
+  background-color: #eee;
+  color: #333;
 }
