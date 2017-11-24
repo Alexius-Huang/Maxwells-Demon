@@ -150,7 +150,7 @@ button#expand-all-cell-btn {
   display: block;
   font-size: 12pt;
   padding: 7.5pt 0;
-  margin: 7.5pt -pt 0 -pt;
+  margin: 7.5pt -5pt 0 -5pt;
   text-align: center;
   width: calc(100% + 10pt);
   transition: .25s;
