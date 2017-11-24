@@ -205,7 +205,8 @@ button#expand-all-cell-btn:hover {
   line-height: 15pt;
   padding-right: 5pt;
 }
-.cell-component > div.cell-component-tools > div.cell-type-field > ul.lang-options > li:hover {
+.cell-component > div.cell-component-tools > div.cell-type-field > ul.lang-options > li:hover,
+.cell-component > div.cell-component-tools > div.cell-type-field > ul.lang-options > li.current-lang {
   background-color: #eee;
   color: #333;
 }
