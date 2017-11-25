@@ -1,0 +1,122 @@
+nav#top-navigation-bar {
+  position: absolute;
+  left: 300px;
+  top: 0;
+  display: inline-block;
+  width: calc(100vw - 300px);
+  height: 30pt;
+  background-color: #222;
+  box-shadow: 5pt 10pt 10pt -10pt #777;
+}
+
+nav#top-navigation-bar > div.navigation-wrapper {
+  box-sizing: border-box;
+  width: 100%;
+  height: 30pt;
+  padding-top: 2.5pt;
+  text-align: center;
+}
+nav#top-navigation-bar > div.navigation-wrapper > button {
+  box-sizing: border-box;
+  width: 25pt;
+  height: 25pt;
+  line-height: 25pt;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  background-color: transparent;
+  border: 1pt solid #444;
+  transition: .25s;
+  font-size: 10pt;
+  position: relative;
+}
+nav#top-navigation-bar > div.navigation-wrapper > button:hover {
+  color: #333;
+  background-color: #eee;
+  transition: .25s;
+}
+nav#top-navigation-bar > div.navigation-wrapper > button.coming-soon {
+  color: #777;
+  pointer-events: none;
+}
+nav#top-navigation-bar > div.navigation-wrapper > button + button {
+  border-left: none;
+}
+nav#top-navigation-bar > div.navigation-wrapper > button > .nav-tooltip,
+nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field > .nav-tooltip {
+  opacity: 0;
+  color: #333;
+  position: absolute;
+  display: inline-block;
+  background-color: #eee;
+  width: 100pt;
+  height: 30pt;
+  line-height: 30pt;
+  font-size: 10pt;
+  bottom: -40pt;
+  left: -37.5pt;
+  text-align: center;
+  font-family: 'PT Sans', sans-serif;
+  pointer-events: none;
+  transition: .25s;
+}
+nav#top-navigation-bar > div.navigation-wrapper > button:hover > .nav-tooltip,
+nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field:hover > .nav-tooltip {
+  opacity: 1;
+  transition: .25s;
+}
+nav#top-navigation-bar > div.navigation-wrapper > button:hover > .nav-tooltip:before,
+nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field:hover > .nav-tooltip:before {
+  content: '';
+  position: absolute;
+  top: -5pt;
+  left: 40pt;
+  width: 0;
+  height: 0;
+  border-left:   10pt solid transparent;
+  border-right:  10pt solid transparent;
+  border-bottom: 15pt solid #eee;
+}
+
+nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field {
+  display: inline-block;
+  height: 25pt;
+  line-height: 25pt;
+  width: 75pt;
+  box-sizing: border-box;
+  border: 1pt solid #444;
+  border-left: none;
+  vertical-align: top;
+  font-size: 10pt;
+  background-color: transparent;
+  text-align: left;
+  font-size: 0;
+  position: relative;
+}
+nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field > span.fa {
+  display: inline-block;
+  width: 25pt;
+  height: 25pt;
+  line-height: 25pt;
+  vertical-align: top;
+  font-size: 10pt;
+  text-align: center;
+}
+nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field > span.field-value {
+  display: inline-block;
+  width: 44pt;
+  height: 18pt;
+  line-height: 18pt;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 8pt;
+  text-align: right;
+  margin-top: 2.5pt;
+  padding-right: 5pt;
+  box-sizing: border-box;
+  border: 1pt solid #444;
+  transition: .25s;
+}
+nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field > span.field-value:hover {
+  background-color: #444;
+  transition: .25s;
+}
