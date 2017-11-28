@@ -1,0 +1,24 @@
+{
+  "loaded": true,
+  "structure": {
+    "folderName": "KERNEL",
+    "id": 1,
+    "expand": true,
+    "newFolderInput": false,
+    "newFolderInputValue": "",
+    "newNotebookInput": false,
+    "newNotebookInputValue": "",
+    "subFolders": []
+  },
+  "notebooks": [
+    {
+      "id": 1,
+      "folderID": 1,
+      "name": "Welcome!"
+    }
+  ],
+  "modal": { 
+    "toggle": false,
+    "targetFolder": null
+  }
+}
