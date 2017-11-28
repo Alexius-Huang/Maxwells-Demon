@@ -61,7 +61,7 @@ nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field > .nav-t
   transition: .25s;
 }
 nav#top-navigation-bar > div.navigation-wrapper > button:hover > .nav-tooltip,
-nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field:hover > .nav-tooltip {
+nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field.off:hover > .nav-tooltip {
   opacity: 1;
   transition: .25s;
 }
@@ -82,7 +82,7 @@ nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field {
   display: inline-block;
   height: 25pt;
   line-height: 25pt;
-  width: 75pt;
+  width: 65pt;
   box-sizing: border-box;
   border: 1pt solid #444;
   border-left: none;
@@ -104,7 +104,7 @@ nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field > span.f
 }
 nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field > span.field-value {
   display: inline-block;
-  width: 44pt;
+  width: 34pt;
   height: 18pt;
   line-height: 18pt;
   font-family: 'Roboto Mono', monospace;
@@ -119,4 +119,40 @@ nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field > span.f
 nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field > span.field-value:hover {
   background-color: #444;
   transition: .25s;
+}
+nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field.on > ul.range-select-list {
+  display: inline-block;
+  position: absolute;
+  z-index: 3;
+  top: 21pt;
+  left: 25pt;
+  width: 34pt;
+  height: 150pt;
+  overflow: auto;
+  text-align: right;
+}
+nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field > ul.range-select-list {
+  display: none;
+}
+nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field > ul.range-select-list::-webkit-scrollbar { 
+  display: none; 
+}
+nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field > ul.range-select-list > li {
+  background-color: #444;
+  color: #eee;
+  font-size: 8pt;
+  height: 16pt;
+  line-height: 16pt;
+  text-align: center;
+  font-family: 'Roboto Mono', monospace;
+  transition: .25s;
+}
+nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field > ul.range-select-list > li:hover,
+nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field > ul.range-select-list > li.current {
+  background-color: #eee;
+  color: #444;
+  transition: .25s;
+}
+nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field > ul.range-select-list > li + li {
+  border-top: 1pt solid #666;
 }

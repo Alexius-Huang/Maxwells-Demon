@@ -45,13 +45,11 @@
 
 .cell-component > .cell-textarea {
   width: 100%;
-  line-height: 18pt;
   color: white;
   background-color: #333;
   border: 1pt solid #777;
   box-sizing: border-box;
   font-family: 'Roboto Mono', monospace;
-  font-size: 14px;
   padding: 3pt 5pt;
   transition: .25s;
 }
