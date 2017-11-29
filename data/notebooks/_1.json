@@ -1,10 +1,11 @@
 {
+  "id": 1,
   "loaded": true,
   "cells": [
     {
       "id": 1,
       "type": "Markdown",
-      "content": "# Welcome!",
+      "content": "# Welcome!\nModified",
       "partial": "full",
       "dependentCellID": null,
       "dependent": null,
@@ -12,8 +13,32 @@
       "showLangOption": false,
       "programmable": false,
       "programResult": ""
+    },
+    {
+      "id": 2,
+      "type": "Markdown",
+      "content": "Splitted!!",
+      "partial": "half",
+      "dependentCellID": 3,
+      "dependent": "main",
+      "hide": false,
+      "showLangOption": false,
+      "programmable": false,
+      "programResult": ""
+    },
+    {
+      "id": 3,
+      "type": "Markdown",
+      "content": "New Section",
+      "partial": "half",
+      "dependentCellID": 2,
+      "dependent": "sub",
+      "hide": false,
+      "showLangOption": false,
+      "programmable": false,
+      "programResult": ""
     }
   ],
-  "cellIDCounter": 1,
+  "cellIDCounter": 3,
   "toolsVisibility": true
 }

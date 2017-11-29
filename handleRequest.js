@@ -9,6 +9,11 @@ function jsonResponse(response, file) {
   })
 }
 
+function okResponse(response, message = 'OK') {
+  response.writeHead(200, { "Content-Type": "text/plain" })
+  response.write(message)
+  response.end()
+}
 
 function processPostRequest(request, callback) {
   if (request.method == 'POST') {
@@ -16,9 +21,6 @@ function processPostRequest(request, callback) {
 
     request.on('data', function (data) {
       body += data;
-      // Too much POST data, kill the connection!
-      // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
-      if (body.length > 1e6) request.connection.destroy()
     });
 
     request.on('end', function () {
@@ -37,7 +39,13 @@ function handleRequest(request, response) {
       processPostRequest(request, ({ id }) => {
         jsonResponse(response, `./data/notebooks/_${id}.json`)
       })
-      break;
+      break
+
+    case '/save_notebook':
+      processPostRequest(request, ({ id, state }) => {
+        fs.writeFile(`./data/notebooks/_${id}.json`, JSON.stringify(state, null, '  '), 'utf8', () => okResponse(response))
+      })
+      break
 
     default:
       response.writeHead(404, { "Content-Type": "text/plain" })
