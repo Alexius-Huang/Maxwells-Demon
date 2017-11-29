@@ -9,6 +9,13 @@ function jsonResponse(response, file) {
   })
 }
 
+function writeJSON(file, data, callback) {
+  fs.writeFile(file, JSON.stringify(data, null, '  '), 'utf8', (err) => {
+    if (err) console.log(err)
+    callback()
+  })
+}
+
 function okResponse(response, message = 'OK') {
   response.writeHead(200, { "Content-Type": "text/plain" })
   response.write(message)
@@ -41,9 +48,15 @@ function handleRequest(request, response) {
       })
       break
 
+    case '/save_file_system':
+      processPostRequest(request, ({ state }) => {
+        writeJSON(`./data/fileSystem.json`, state, () => okResponse(response))
+      })
+      break
+
     case '/save_notebook':
       processPostRequest(request, ({ id, state }) => {
-        fs.writeFile(`./data/notebooks/_${id}.json`, JSON.stringify(state, null, '  '), 'utf8', () => okResponse(response))
+        writeJSON(`./data/notebooks/_${id}.json`, state, () => okResponse(response))
       })
       break
 
