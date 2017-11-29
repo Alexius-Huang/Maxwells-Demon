@@ -17,8 +17,6 @@
       "name": "Welcome!"
     }
   ],
-  "modal": { 
-    "toggle": false,
-    "targetFolder": null
-  }
+  "notebookCount": 1,
+  "targetNotebook": 1
 }

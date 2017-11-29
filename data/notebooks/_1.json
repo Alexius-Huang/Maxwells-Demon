@@ -1,0 +1,19 @@
+{
+  "loaded": true,
+  "cells": [
+    {
+      "id": 1,
+      "type": "Markdown",
+      "content": "# Welcome!",
+      "partial": "full",
+      "dependentCellID": null,
+      "dependent": null,
+      "hide": false,
+      "showLangOption": false,
+      "programmable": false,
+      "programResult": ""
+    }
+  ],
+  "cellIDCounter": 1,
+  "toolsVisibility": true
+}
