@@ -60,6 +60,12 @@ function handleRequest(request, response) {
       })
       break
 
+    case '/new_notebook':
+      processPostRequest(request, ({ id, state }) => {
+        writeJSON(`./data/notebooks/_${id}.json`, state, () => okResponse(response))
+      })
+      break
+
     default:
       response.writeHead(404, { "Content-Type": "text/plain" })
       response.write("Not Found")
