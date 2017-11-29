@@ -69,6 +69,9 @@ p.virtual-notebook-name {
 .virtual-folder-input-cancel,
 .notebook-input-cancel  { right: 10pt; }
 
+p.virtual-notebook-name.current {
+  border-bottom: 2pt solid #444;
+}
 
 .virtual-folder[data-expand="false"] > p.virtual-notebook-name,
 .virtual-folder[data-expand="false"] > .virtual-folder-new-input-wrapper,
