@@ -56,7 +56,19 @@ ul > li {
   animation: fadeIn .5s;
 }
 
+span.fa.spin {
+  animation-name: spin;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
 @keyframes fadeIn {
-  from { opacity: 0 }
-  to   { opacity: 1 }
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes spin {
+  from { transform:rotate(0deg);   }
+  to   { transform:rotate(360deg); }
 }

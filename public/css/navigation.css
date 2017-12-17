@@ -39,7 +39,8 @@ nav#top-navigation-bar > div.navigation-wrapper > button.coming-soon {
   color: #777;
   pointer-events: none;
 }
-nav#top-navigation-bar > div.navigation-wrapper > button + button {
+nav#top-navigation-bar > div.navigation-wrapper > button + button,
+nav#top-navigation-bar > div.navigation-wrapper > span.navigation-field + button {
   border-left: none;
 }
 nav#top-navigation-bar > div.navigation-wrapper > button > .nav-tooltip,
