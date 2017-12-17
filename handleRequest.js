@@ -55,8 +55,8 @@ function handleRequest(request, response) {
       break
 
     case '/save_notebook':
-      processPostRequest(request, ({ id, state }) => {
-        writeJSON(`./data/notebooks/_${id}.json`, state, () => okResponse(response))
+      processPostRequest(request, ({ state }) => {
+        writeJSON(`./data/notebooks/_${state.id}.json`, state, () => okResponse(response))
       })
       break
 
